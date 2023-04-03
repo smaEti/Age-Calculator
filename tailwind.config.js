@@ -13,7 +13,7 @@ export default {
       // TODO: border rounded full doesn't work
       borderRadius:{
         'full' : '50%',
-        'notFull' : '36%',
+        'notFull' : '25%',
       },
       padding: {
           '13': '3.4rem',

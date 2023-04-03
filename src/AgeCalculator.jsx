@@ -3,18 +3,18 @@ import './App.css';
 import Input from './components/Input';
 import Button from './components/Button';
 import Text from './components/Text';
-import { useState , useRef } from 'react';
-//TODO use state for Errors
+import { useState , useRef, useEffect } from 'react';
 const AgeCalculator = () => {
-  let [dayError,setDayError] = useState('');
-  let [monthError,setMonthError] = useState('');
-  let [yearError,setYearError] = useState('');
+  let [dayError,setDayError] = useState('-');
+  let [monthError,setMonthError] = useState('-');
+  let [yearError,setYearError] = useState('-');
   const dayInput = useRef();
   let monthInput = useRef();
   let yearInput = useRef();
   let [days,setDays] = useState(0);
   let [months,setMonths] = useState(0);
   let [years,setYears] = useState(0);
+  let [test,setTest] = useState(0);
   const Time = new Date();
   const calculateAge = () => {
     //validating the inputs (days)
@@ -29,41 +29,51 @@ const AgeCalculator = () => {
     }else{
       dayInput.current.classList.remove('border-red-600');
       setDayError('');
+      setTest(test + 1)
     }
     //validating the inputs (years)
     if (yearInput.current.value == '' ){
       yearInput.current.classList.add('border-red-600');
       setYearError('this field is requierd');
-      setMonths(0);
+      setYears(0);
     }else if (yearInput.current.value > Time.getFullYear()){
       yearInput.current.classList.add('border-red-600');
       setYearError('must be in the past');
-      setMonths(0);
+      setYears(0);
     }else{
       yearInput.current.classList.remove('border-red-600');
       setYearError('');
+      setTest(test + 1)
     }
     //validating the inputs (months)
     if (monthInput.current.value == '' ){
       monthInput.current.classList.add('border-red-600');
       setMonthError('this field is requierd');
-      setYears(0);
+      setMonths(0);
     }else if (monthInput.current.value > 12){
       monthInput.current.classList.add('border-red-600');
       setMonthError('must be a valid month');
-      setYears(0);
+      setMonths(0);
     }else{
       monthInput.current.classList.remove('border-red-600');
       setMonthError('');
+      setTest(test + 1)
     }
+    console.log("fuckYOu")
+  };
+  useEffect(()=>{
+    console.log("year error:" ,yearError)
+    console.log("month error:" ,monthError)
+    console.log("day error:" ,dayError)
+    console.log("yearInput:",yearInput.current.value)
     if ( yearError == '' && monthError == '' && dayError == ''){
       let wholeDays = ((Time.getFullYear() - Number(yearInput.current.value))*12*30) + ((Time.getMonth() + 1)*30 + Time.getDate()) - (Number(monthInput.current.value*30) + (Number(dayInput.current.value)));
       setDays(Number(wholeDays) - (Math.floor(wholeDays / 360)*12*30 + Math.floor(( Number(wholeDays) - (Math.floor(wholeDays / 360)*12*30)) / 30)*30)); 
       setMonths(Math.floor(( Number(wholeDays) - (Math.floor(wholeDays / 360)*12*30)) / 30));
       setYears((Time.getFullYear()-Number(yearInput.current.value))==2023?'--': Math.floor(wholeDays / 360));
-      // console.log(Time.getFullYear()-Number(yearInput.current.value))
+      console.log('fuck you')
     }
-  };
+  })
   return (
     <div className="container w-11/12 bg-white md:w-5/12 mt-36 rounded-tr-3xl rounded-tl-3xl rounded-bl-3xl rounded-br-notFull md:h-fit">
       <div className=' pl-5 md:pl-14 md:pb-10'>
